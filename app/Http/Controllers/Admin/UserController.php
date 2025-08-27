@@ -9,6 +9,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -19,7 +21,10 @@ class UserController extends Controller
 
     public function index(Request $request): Response
     {
-        $query = User::query();
+        $query = User::query()->with([
+            'roles:roles.id,name',
+            'location:id,city_name',
+        ]);
 
         if ($search = $request->string('search')->toString()) {
             $query->where(function ($q) use ($search) {
@@ -33,6 +38,14 @@ class UserController extends Controller
         // dd($users);
         return Inertia::render('admin/users/index', [
             'users' => $users,
+            // Provide options for the modal
+            'roles' => Role::query()->orderBy('name')->pluck('name'),
+            // Align with migration: locations.city_name exists (not 'name')
+            // Send { id, name } to the frontend to match the modal's expectations
+            'locations' => DB::table('locations')
+                ->select('id', DB::raw('city_name as name'))
+                ->orderBy('city_name')
+                ->get(),
             'filters' => [
                 'search' => $search,
             ],

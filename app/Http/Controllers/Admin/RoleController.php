@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Services\RolePermissionService;
 
 class RoleController extends Controller
 {
@@ -24,13 +25,15 @@ class RoleController extends Controller
         if ($search = $request->string('search')->toString()) {
             $query->where('name', 'like', "%{$search}%");
         }
-        $roles = $query->with('permissions')->paginate(15)->withQueryString();
+        $roles = $query->with('permissions')->paginate(5)->withQueryString();
+        // dd($roles);
 
         return Inertia::render('admin/roles/index', [
             'roles' => $roles,
             'filters' => [
                 'search' => $search,
             ],
+            'permissionCategories' => app(RolePermissionService::class)->getPermissionCategories(),
         ]);
     }
 

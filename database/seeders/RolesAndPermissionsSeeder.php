@@ -148,13 +148,15 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // Create a default super admin user
+        $firstLocationId = \App\Models\Location::query()->value('id');
+
         $superAdminUser = \App\Models\User::firstOrCreate(
             ['email' => 'admin@carsales.com'],
             [
                 'name' => 'Super Admin',
                 'password' => bcrypt('password'),
                 'contact' => '+1234567890',
-                // location_id is nullable, so we don't need to set it
+                'location_id' => $firstLocationId,
             ]
         );
 
