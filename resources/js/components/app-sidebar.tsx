@@ -6,6 +6,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User as UserIcon, Shield } from 'lucide-react';
 import AppLogo from './app-logo';
+import { title } from 'process';
 
 const mainNavItems: NavItem[] = [
     {
@@ -24,6 +25,11 @@ const adminNavItems: NavItem[] = [
     {
         title: 'Roles',
         href: '/admin/roles',
+        icon: Shield,
+    },
+    {
+        title: 'Locations',
+        href: '/admin/locations',
         icon: Shield,
     },
 ];
@@ -59,6 +65,7 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} adminItems={adminNavItems} />
             </SidebarContent>
+            
 
             <SidebarFooter>
                 <NavFooter items={footerNavItems} className="mt-auto" />

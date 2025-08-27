@@ -34,6 +34,8 @@ interface DataTableProps<TData, TValue> {
   loading?: boolean
   error?: string | null
   meta?: any
+  /** The column id/accessor to apply the text filter to. Defaults to "name". */
+  filterColumn?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -43,6 +45,7 @@ export function DataTable<TData, TValue>({
   loading = false,
   error = null,
   meta,
+  filterColumn = "name",
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -65,9 +68,9 @@ export function DataTable<TData, TValue>({
         <div className="flex items-center py-4">
         <Input
           placeholder="Filter..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn(filterColumn)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
           disabled={loading}

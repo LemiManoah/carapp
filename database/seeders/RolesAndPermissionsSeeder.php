@@ -106,8 +106,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'view advertisements', 'create advertisements', 'edit advertisements', 'delete advertisements', 'list advertisements', 'approve advertisements', 'reject advertisements',
             'view bids', 'create bids', 'edit bids', 'delete bids', 'list bids', 'accept bids', 'reject bids',
             'view users', 'create users', 'edit users', 'list users',
+            'manage roles', 'manage permissions',
             'view locations', 'create locations', 'edit locations', 'delete locations', 'list locations',
-            'view analytics', 'manage settings', 'view logs',
+            'view analytics', 'manage settings', 'view logs', 
         ]);
 
         // Moderator Role

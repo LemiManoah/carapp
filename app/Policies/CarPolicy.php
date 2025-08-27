@@ -2,26 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\Location;
+use App\Models\Car;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class LocationPolicy
+class CarPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('list locations') || $user->can('view locations');
+        return $user->can('list cars') || $user->can('view cars');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Location $location): bool
+    public function view(User $user, Car $car): bool
     {
-        return $user->can('view locations');
+        return $user->can('view cars');
     }
 
     /**
@@ -29,38 +29,38 @@ class LocationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create locations');
+        return $user->can('create cars');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Location $location): bool
+    public function update(User $user, Car $car): bool
     {
-        return $user->can('edit locations');
+        return $user->can('edit cars');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Location $location): bool
+    public function delete(User $user, Car $car): bool
     {
-        return $user->can('delete locations');
+        return $user->can('delete cars');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Location $location): bool
+    public function restore(User $user, Car $car): bool
     {
-        return $user->can('restore locations');
+        return $user->can('restore cars');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Location $location): bool
+    public function forceDelete(User $user, Car $car): bool
     {
-        return $user->can('force delete locations');
+        return $user->can('force delete cars');
     }
 }

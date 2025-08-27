@@ -8,7 +8,10 @@ use App\Models\User as AppUser;
 use App\Policies\UserPolicy;
 use App\Policies\RolePolicy;
 use Spatie\Permission\Models\Role as SpatieRole;
-
+use App\Models\Advertisment;
+use App\Policies\AdvertismentPolicy;
+use App\Models\Bid;
+use App\Policies\BidPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +22,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         AppUser::class => UserPolicy::class,
         SpatieRole::class => RolePolicy::class,
+        Advertisment::class => AdvertismentPolicy::class,
+        Bid::class => BidPolicy::class,
     ];
 
     /**
@@ -30,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Super Admin bypasses all checks
         Gate::before(function ($user, $ability) {
-            return method_exists($user, 'hasRole') && $user->hasRole('super-admin') ? true : null;
+            return method_exists($user, 'hasRole') && ($user->hasRole('super-admin') || $user->hasRole('admin')) ? true : null;
         });
     }
 }
