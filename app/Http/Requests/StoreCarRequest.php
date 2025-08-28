@@ -31,6 +31,9 @@ class StoreCarRequest extends FormRequest
             'mileage' => 'nullable|integer',
             'fuel_type' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:50',
+            // images[]: optional multiple images
+            'images' => 'nullable|array',
+            'images.*' => 'file|image|mimes:jpeg,png,webp|max:5120', // 5MB per image
         ];
     }
 
@@ -43,9 +46,12 @@ class StoreCarRequest extends FormRequest
             'car_type.required' => 'The car type field is required.',
             'year.required' => 'The year field is required.',
             'price.required' => 'The price field is required.',
-            'mileage.required' => 'The mileage field is required.',
-            'fuel_type.required' => 'The fuel type field is required.',
-            'color.required' => 'The color field is required.',
+            // Optional fields shouldn't have required messages
+            'images.array' => 'Images must be an array of files.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Images must be JPEG, PNG, or WEBP.',
+            'images.*.max' => 'Each image may not be greater than 5MB.',
         ];
     }
 }
+

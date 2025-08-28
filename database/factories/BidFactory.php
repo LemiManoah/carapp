@@ -17,7 +17,10 @@ class BidFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => fake()->numberBetween(1, 10),
+            'car_id' => fake()->numberBetween(1, 10),
+            'amount' => fake()->numberBetween(50000000, 500000000),
+            'status' => fake()->randomElement(['Pending', 'Accepted', 'Rejected', 'Withdrawn']),
         ];
     }
 }

@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, User as UserIcon, Shield } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, User as UserIcon, Shield, Car, MapPin } from 'lucide-react';
 import AppLogo from './app-logo';
 import { title } from 'process';
 
@@ -30,7 +30,22 @@ const adminNavItems: NavItem[] = [
     {
         title: 'Locations',
         href: '/admin/locations',
-        icon: Shield,
+        icon: MapPin,
+    },
+    {
+        title: 'Cars',
+        href: '/admin/cars',
+        icon: Car,
+    },
+    {
+        title: 'Bids',
+        href: '/admin/bids',
+        icon: BookOpen,
+    },
+    {
+        title: 'Advertisments',
+        href: '/admin/advertisments',
+        icon: BookOpen,
     },
 ];
 

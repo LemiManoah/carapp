@@ -30,9 +30,9 @@ return new class extends Migration
             $table->index('price');
 
             $table->softDeletes();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('updated_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('deleted_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->default(null)->constrained('users')->onDelete('cascade');
+            $table->foreignId('updated_by')->nullable()->default(null)->constrained('users')->onDelete('cascade');
+            $table->foreignId('deleted_by')->nullable()->default(null)->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -44,3 +44,4 @@ return new class extends Migration
         Schema::dropIfExists('cars');
     }
 };
+

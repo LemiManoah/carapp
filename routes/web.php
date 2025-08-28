@@ -22,21 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('components/index');
     })->name('components');
 
-    // Cars CRUD mounted at /cars
-    Route::resource('cars', CarController::class);
-    Route::post('cars/{car}/restore', [CarController::class, 'restore'])->name('cars.restore');
-    Route::post('cars/{car}/force-delete', [CarController::class, 'forceDelete'])->name('cars.force-delete');
-
-    // Advertisments CRUD mounted at /advertisments
-    Route::resource('advertisments', AdvertismentController::class);
-    Route::post('advertisments/{advertisment}/restore', [AdvertismentController::class, 'restore'])->name('advertisments.restore');
-    Route::post('advertisments/{advertisment}/force-delete', [AdvertismentController::class, 'forceDelete'])->name('advertisments.force-delete');
-
-    // Bids CRUD mounted at /bids
-    Route::resource('bids', BidController::class);
-    Route::post('bids/{bid}/restore', [BidController::class, 'restore'])->name('bids.restore');
-    Route::post('bids/{bid}/force-delete', [BidController::class, 'forceDelete'])->name('bids.force-delete');
-
+    
+    
     // Admin CRUD routes (policy-protected). Kept separate to avoid path conflicts with existing admin role endpoints.
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', UserController::class);
@@ -50,6 +37,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('locations', LocationController::class);
         Route::post('locations/{location}/restore', [LocationController::class, 'restore'])->name('locations.restore');
         Route::post('locations/{location}/force-delete', [LocationController::class, 'forceDelete'])->name('locations.force-delete');
+        // Cars CRUD mounted at /cars
+        Route::resource('cars', CarController::class);
+        Route::post('cars/{car}/restore', [CarController::class, 'restore'])->name('cars.restore');
+        Route::post('cars/{car}/force-delete', [CarController::class, 'forceDelete'])->name('cars.force-delete');
+        // Bids CRUD mounted at /bids
+        Route::resource('bids', BidController::class);
+        Route::post('bids/{bid}/restore', [BidController::class, 'restore'])->name('bids.restore');
+        Route::post('bids/{bid}/force-delete', [BidController::class, 'forceDelete'])->name('bids.force-delete');
+        // Advertisments CRUD mounted at /advertisments
+        Route::resource('advertisments', AdvertismentController::class);
+        Route::post('advertisments/{advertisment}/restore', [AdvertismentController::class, 'restore'])->name('advertisments.restore');
+        Route::post('advertisments/{advertisment}/force-delete', [AdvertismentController::class, 'forceDelete'])->name('advertisments.force-delete');
     });
 });
 

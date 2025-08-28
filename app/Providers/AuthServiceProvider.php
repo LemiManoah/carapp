@@ -12,6 +12,8 @@ use App\Models\Advertisment;
 use App\Policies\AdvertismentPolicy;
 use App\Models\Bid;
 use App\Policies\BidPolicy;
+use App\Models\Location;
+use App\Policies\LocationPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         SpatieRole::class => RolePolicy::class,
         Advertisment::class => AdvertismentPolicy::class,
         Bid::class => BidPolicy::class,
+        Location::class => LocationPolicy::class,
     ];
 
     /**

@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,8 +18,9 @@ class LocationController extends Controller
         $this->authorizeResource(Location::class, 'location');
     }
 
-    public function index(StoreLocationRequest $request): Response
+    public function index(Request $request): Response
     {
+        $this->authorize('viewAny', Location::class);
         $query = Location::query();
 
         if ($search = $request->string('search')->toString()) {
@@ -37,6 +39,7 @@ class LocationController extends Controller
 
     public function store(StoreLocationRequest $request): RedirectResponse
     {
+        $this->authorize('create locations');
         $validated = $request->validated();
 
         Location::create($validated);
@@ -46,6 +49,7 @@ class LocationController extends Controller
 
     public function update(UpdateLocationRequest $request, Location $location): RedirectResponse
     {
+        $this->authorize('edit locations');
         $validated = $request->validated();
 
         $location->update($validated);
@@ -55,7 +59,20 @@ class LocationController extends Controller
 
     public function destroy(Location $location): RedirectResponse
     {
+        $this->authorize('delete locations');
         $location->delete();
         return redirect()->route('admin.locations.index')->with('success', 'Location deleted successfully.');
+    }
+    public function restore(Location $location): RedirectResponse
+    {
+        $this->authorize('restore locations');
+        $location->restore();
+        return redirect()->route('admin.locations.index')->with('success', 'Location restored successfully.');
+    }
+    public function forceDelete(Location $location): RedirectResponse
+    {
+        $this->authorize('force delete locations');
+        $location->forceDelete();
+        return redirect()->route('admin.locations.index')->with('success', 'Location force deleted successfully.');
     }
 }

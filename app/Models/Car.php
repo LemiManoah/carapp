@@ -6,11 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia; 
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Models\User;
+use Spatie\Image\Enums\Fit;
 
-class Car extends Model
+class Car extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\CarFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'brand',
@@ -22,9 +27,6 @@ class Car extends Model
         'mileage',
         'fuel_type',
         'color',
-        'created_by',
-        'updated_by',
-        'deleted_by',
     ];
 
     protected $casts = [
@@ -33,9 +35,15 @@ class Car extends Model
         'mileage' => 'integer',
     ];
 
+    protected $appends = [
+        'thumb_url',
+        'images',
+        'media_items',
+    ];
+
     public function advertisements()
     {
-        return $this->hasMany(Advertisement::class);
+        return $this->hasMany(Advertisment::class);
     }
 
     public function bids()
@@ -63,6 +71,21 @@ class Car extends Model
         return $query->whereBetween('price', [$minPrice, $maxPrice]);
     }
 
+    public static function scopeCreatedBy($query, User $user)
+    {
+        return $query->where('created_by', $user->id);
+    }
+
+    public static function scopeUpdatedBy($query, User $user)
+    {
+        return $query->where('updated_by', $user->id);
+    }
+
+    public static function scopeDeletedBy($query, User $user)
+    {
+        return $query->where('deleted_by', $user->id);
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -76,5 +99,52 @@ class Car extends Model
     public function deletedBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    /**
+     * Register the media collections for the car.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images')
+            ->useDisk('public')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
+            ->withResponsiveImages();
+    }
+
+    /**
+     * Define media conversions (e.g., thumbnail) for images.
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->fit(Fit::Crop, 300, 200)
+            ->nonQueued();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accessors for Inertia/JSON
+    |--------------------------------------------------------------------------
+    */
+    public function getThumbUrlAttribute(): ?string
+    {
+        // Prefer the most recently uploaded image as the primary thumb
+        $media = $this->getMedia('images')->last();
+        return $media ? $media->getUrl('thumb') : null;
+    }
+
+    public function getImagesAttribute(): array
+    {
+        return $this->getMedia('images')->map(fn ($m) => $m->getUrl())->all();
+    }
+
+    public function getMediaItemsAttribute(): array
+    {
+        return $this->getMedia('images')->map(fn ($m) => [
+            'id' => $m->id,
+            'url' => $m->getUrl(),
+            'thumb_url' => $m->getUrl('thumb'),
+        ])->all();
     }
 }
