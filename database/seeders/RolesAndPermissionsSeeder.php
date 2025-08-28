@@ -25,6 +25,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'delete cars',
             'list cars',
             'search cars',
+            'restore cars',
+            'force delete cars',
         ];
 
         // Create permissions for advertisement management
@@ -36,6 +38,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'list advertisements',
             'approve advertisements',
             'reject advertisements',
+            'restore advertisements',
+            'force delete advertisements',
         ];
 
         // Create permissions for bidding system
@@ -47,6 +51,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'list bids',
             'accept bids',
             'reject bids',
+            'restore bids',
+            'force delete bids',
         ];
 
         // Create permissions for user management
@@ -56,6 +62,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit users',
             'delete users',
             'list users',
+            'restore users',
+            'force delete users',
             'manage roles',
             'manage permissions',
         ];
@@ -67,6 +75,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit locations',
             'delete locations',
             'list locations',
+            'restore locations',
+            'force delete locations',
         ];
 
         // Create permissions for system management
@@ -103,11 +113,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->givePermissionTo([
             'view cars', 'create cars', 'edit cars', 'delete cars', 'list cars', 'search cars',
-            'view advertisements', 'create advertisements', 'edit advertisements', 'delete advertisements', 'list advertisements', 'approve advertisements', 'reject advertisements',
-            'view bids', 'create bids', 'edit bids', 'delete bids', 'list bids', 'accept bids', 'reject bids',
-            'view users', 'create users', 'edit users', 'list users',
+            'view advertisements', 'create advertisements', 'edit advertisements', 'delete advertisements', 'list advertisements', 'approve advertisements', 'reject advertisements', 'restore advertisements', 'force delete advertisements',
+            'view bids', 'create bids', 'edit bids', 'delete bids', 'list bids', 'accept bids', 'reject bids', 'restore bids', 'force delete bids',
+            'view users', 'create users', 'edit users', 'list users', 'restore users', 'force delete users',
             'manage roles', 'manage permissions',
-            'view locations', 'create locations', 'edit locations', 'delete locations', 'list locations',
+            'view locations', 'create locations', 'edit locations', 'delete locations', 'list locations', 'restore locations', 'force delete locations',
             'view analytics', 'manage settings', 'view logs', 
         ]);
 
@@ -115,10 +125,10 @@ class RolesAndPermissionsSeeder extends Seeder
         $moderator = Role::firstOrCreate(['name' => 'moderator']);
         $moderator->givePermissionTo([
             'view cars', 'list cars', 'search cars',
-            'view advertisements', 'list advertisements', 'approve advertisements', 'reject advertisements',
-            'view bids', 'list bids',
-            'view users', 'list users',
-            'view locations', 'list locations',
+            'view advertisements', 'list advertisements', 'approve advertisements', 'reject advertisements', 'restore advertisements', 
+            'view bids', 'list bids', 'accept bids', 'reject bids', 'restore bids', 'force delete bids',
+            'view users', 'list users', 'restore users', 'force delete users',
+            'view locations', 'list locations', 'restore locations', 
             'view analytics',
         ]);
 

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Models\Car;
+use App\Models\User;
 use App\Http\Requests\StoreBidRequest;
 use App\Http\Requests\UpdateBidRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,7 +19,7 @@ class BidController extends Controller
         $this->authorizeResource(Bid::class, 'bid');
     }
 
-    public function index(StoreBidRequest $request): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Bid::class);
         $query = Bid::query()->with(['car', 'user']);
@@ -30,11 +33,32 @@ class BidController extends Controller
 
         $bids = $query->latest()->paginate(15)->withQueryString();
 
+        // Lightweight options for dropdowns in the modal
+        $cars = Car::query()
+            ->select(['id', 'brand', 'model'])
+            ->latest('id')
+            ->limit(100)
+            ->get()
+            ->map(fn ($c) => [
+                'id' => $c->id,
+                'brand' => $c->brand,
+                'model' => $c->model,
+                'thumb_url' => $c->thumb_url,
+            ]);
+
+        $users = User::query()
+            ->select(['id', 'name', 'email'])
+            ->latest('id')
+            ->limit(100)
+            ->get();
+
         return Inertia::render('admin/bids/index', [
             'bids' => $bids,
             'filters' => [
                 'search' => $search ?? null,
             ],
+            'cars' => $cars,
+            'users' => $users,
         ]);
     }
 

@@ -29,6 +29,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            // Pick an existing location id (LocationSeeder runs before UserSeeder)
+            'location_id' => \App\Models\Location::query()->inRandomOrder()->value('id') ?? null,
+            // Generate a numeric contact string up to 15 chars to fit the users.contact column
+            'contact' => substr(preg_replace('/\D+/', '', fake()->phoneNumber()), 0, 15),
         ];
     }
 
